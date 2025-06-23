@@ -3,8 +3,11 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score
 
 # Dados fornecidos
-v = np.array([10, 20, 30, 40, 60, 70])
-mu = np.array([0.313, 0.250, 0.215, 0.192, 0.164, 0.154])
+#v = np.array([10, 20, 30, 40, 60, 70])
+#mu = np.array([0.313, 0.250, 0.215, 0.192, 0.164, 0.154])
+
+v = np.array([700, 710, 720, 730, 740, 780])
+mu = np.array([97.71, 98.11, 98.49, 98.88, 99.26, 100.73])
 
 # Transformação logarítmica
 log_v = np.log(v)

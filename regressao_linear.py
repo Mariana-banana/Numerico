@@ -6,18 +6,21 @@ from sklearn.metrics import r2_score
 #                    ÁREA DE CONFIGURAÇÃO
 # ===================================================================
 # 1. Insira os dados do seu problema
-# x_data = np.array([250, 330, 412, 485, 617])
-# y_data = np.array([5720, 5260, 4450, 2780, 1506])
+x_data = np.array([250, 330, 412, 485, 617])
+y_data = np.array([5720, 5260, 4450, 2780, 1506])
 
-x_data = np.array([10, 20, 30, 40, 60, 70])
-y_data = np.array([0.313, 0.25, 0.215, 0.192, 0.164, 0.154])
+#x_data = np.array([10, 20, 30, 40, 60, 70])
+#y_data = np.array([0.313, 0.25, 0.215, 0.192, 0.164, 0.154])
+
+#x_data = np.array([1, 1.1, 1.2])
+#y_data = np.array([2.718, 3.004, 3.32])
 
 # 2. Escolha o grau do polinômio
-grau_do_polinomio = 3
+grau_do_polinomio = 2
 
 # 3. (NOVO) Coloque aqui os valores de X que você quer calcular.
 #    Deixe a lista vazia [] se não quiser calcular nenhum ponto.
-pontos_para_calcular = [50, 120]
+pontos_para_calcular = []
 # ===================================================================
 
 
