@@ -135,6 +135,16 @@ if __name__ == '__main__':
         "labels": ["x(t)"]
     }
     
+    problema_paraquedista = {
+        "nome": "Velocidade de um Paraquedista (Questão 25)",
+        "f": lambda t, y: (1 - (y**2)/40) * 9.81,
+        "y0": 70,
+        "t0": 0.0,
+        "t_final": 20,
+        "h": 0.1,
+        "labels": ["x(t)"]
+    }
+    
     problema_x_do_i = {
         "nome": "Equação Simples (x' = x^2)",
         "f": lambda t, y: (110/3) - 5 * y,
@@ -173,12 +183,30 @@ if __name__ == '__main__':
         "labels": ["Carga q(t) (C)", "Corrente q'(t) (A)"]
     }
 
+    problema_camada_limite = {
+        "nome": "Escoamento em Camada Limite (Questão 23)",
+        
+        # Nossa EDO de 1ª ordem. 't' no código é 'x' no problema,
+        # e 'y' no código é a velocidade 'U'.
+        "f": lambda t, y: -(1 + t) / (1.23 * y),
+        
+        # Condição inicial U(0)=1. Como é uma única equação, y0 é um número.
+        "y0": 1.0,
+        
+        # Parâmetros da simulação
+        "t0": 0.0,
+        "t_final": 1.0,    # O intervalo é [0, 1]
+        "h": 0.1,          # Usando um passo razoável
+        
+        # Rótulo para o gráfico
+        "labels": ["Velocidade U(x)"]
+    }
     
 
     # --- ESCOLHA QUAL PROBLEMA EXECUTAR AQUI ---
     # Basta atribuir o dicionário do problema desejado à variável 'problema_ativo'
     
-    problema_ativo = problema_rlc
+    problema_ativo = problema_paraquedista
     # problema_ativo = problema_sistema_linear
     
     # Executa a função principal com o problema escolhido
