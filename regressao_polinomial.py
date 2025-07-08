@@ -6,8 +6,11 @@ from numpy.polynomial import Polynomial
 P = np.array([700, 710, 720, 730, 740, 780], dtype=float)  # Pressão (mm Hg)
 T = np.array([97.71, 98.11, 98.49, 98.88, 99.26, 100.73], dtype=float)  # Temperatura (°C)
 
+P = np.array([5, 15, 25, 35])
+T = np.array([10, 15, 20, 13])
+
 # Ajuste polinomial de grau 2 (parabólico é suficiente nesse caso)
-grau = 1
+grau = 2
 coefs = np.polyfit(P, T, grau)  # Ajusta um polinômio de grau 2
 
 # Criação da função polinomial para uso e visualização

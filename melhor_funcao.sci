@@ -60,7 +60,7 @@ function melhor_modelo = analise(X, Y)
 endfunction
 
 // Dados do problema da Temperatura vs. Pressão
-P = [700, 710, 720, 730, 740, 780]; // Variável X
-T = [97.71, 98.11, 98.49, 98.88, 99.26, 100.73]; // Variável Y
+P = [5, 15, 25, 35]; // Variável X
+T = [10, 15, 20, 13]; // Variável Y
 
 melhor_ajuste = analise(P, T)

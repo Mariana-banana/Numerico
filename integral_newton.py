@@ -52,8 +52,8 @@ def mostrar_polinomio_newton(x_data, y_data):
 if __name__ == '__main__':
     
     # Passo 0: Dados da tabela (exemplo) para e^x
-    x_tabela = [1.0, 1.5, 2.0]
-    y_tabela = [2.7183, 4.4817, 7.3891]
+    x_tabela = [0,5,10,15,20,25,30]
+    y_tabela = [0,3,4,4.6,4,3,0]
     
     # --- NOVO PASSO: MOSTRAR O POLINÔMIO ---
     mostrar_polinomio_newton(x_tabela, y_tabela)

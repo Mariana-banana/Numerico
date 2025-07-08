@@ -1,0 +1,965 @@
+1.
+
+// Dados dos pontos
+x = [-3; 0; 2; 4];
+y = [ 3; 1; 1; 3];
+
+// Construir a matriz do sistema: [x^2  x  1]
+A = [x.^2  x  ones(x)];
+
+// Resolver o sistema dos mínimos quadrados: A' * A * coef = A' * y
+coef = (A' * A) \ (A' * y);
+
+// Mostrar os coeficientes da parábola
+a = coef(1);
+b = coef(2);
+c = coef(3);
+
+disp("Parábola ajustada: y = " + string(a) + "*x^2 + " + string(b) + "*x + " + string(c));
+
+////////////////////////////////////////////////////////////////////////////////////
+2.
+
+// Dados dos pontos
+x = [0; 1; 2; 3; 4];
+y = [1.5; 2.5; 3.5; 5; 7.5];
+
+// Linearizar a equação: ln(y) = ln(A) + Bx
+Y_log = log(y);
+
+// Matriz do sistema linear: [x 1]
+A = [x ones(x)];
+
+// Resolve: A * [B; ln(A)] = ln(y)
+coef = A \ Y_log;
+
+// Coeficientes
+B = coef(1);
+lnA = coef(2);
+A_val = exp(lnA);
+
+// Mostrar a função ajustada
+disp("Função ajustada: y = " + string(A_val) + " * exp(" + string(B) + " * x)");
+
+
+////////////////////////////////////////////////////////////////////////////
+3.
+// Dados da tabela
+d = [5 7.5 10 12.5 15];  // distâncias em cm
+E = [26 11.56 6.50 4.16 2.88]; // intensidades do campo elétrico
+
+// Construção da matriz do sistema (regressão polinomial de grau 2)
+X = [ones(d)', d', d'.^2];  // matriz com colunas [1, d, d^2]
+
+// Cálculo dos coeficientes pelo método dos mínimos quadrados
+a = X \ E'; // resolve o sistema X * a = E
+
+// Mostra os coeficientes a0, a1, a2
+disp("Coeficientes [a0, a1, a2]:")
+disp(a')
+
+// Estimar o valor de E para d = 8.5 cm
+d_new = 8.5;
+E_new = a(1) + a(2)*d_new + a(3)*d_new^2;
+
+disp("Campo elétrico estimado para d = 8.5 cm:")
+disp(E_new)
+
+
+
+
+////////////////////////////////////////////////////////////////////////
+4.
+// Dados da tabela
+d = [30 35 40];  // temperatura
+E = [0.99826 0.99818 0.99828]; // calor específico
+
+// Construção da matriz do sistema (regressão polinomial de grau 2)
+X = [ones(d)', d', d'.^2];  // matriz com colunas [1, d, d^2]
+
+// Cálculo dos coeficientes pelo método dos mínimos quadrados
+a = X \ E'; // resolve o sistema X * a = E
+
+// Mostra os coeficientes a0, a1, a2
+disp("Coeficientes [a0, a1, a2]:")
+disp(a')
+
+// Estimar o valor de E para 37.5
+d_new = 37.5;
+E_new = a(1) + a(2)*d_new + a(3)*d_new^2;
+
+disp("c para 37.5:")
+disp(E_new)
+
+/////////////////////////////////////////////////////////////////////
+5.
+x = [-2 -1 0 2 3];    // removemos x = 1 que queremos estimar
+y = [-7 0 1 9 28];    // valores correspondentes
+
+// Monta matriz do sistema: [1, x, x^2]
+X = [ones(x)', x', (x.^2)', (x.^3)'];
+
+// Calcula os coeficientes a0, a1, a2, a3
+a = X \ y'; // resolve X * a = y
+
+// Mostra os coeficientes do polinômio
+disp("Coeficientes [a0 a1 a2 a3]:")
+disp(a')
+
+// Calcula f(1) com o modelo ajustado
+x0 = 1;
+f1 = a(1) + a(2)*x0 + a(3)*x0^2 + a(4)*x0^3;
+
+disp("Valor estimado de f(1):")
+disp(f1)
+
+x^3 - 1
+
+
+///////////////////////////////////////////////////////////////
+6.
+x = [10 15 20 25 30 35];   
+y = [105 172 253 352 473 619];  
+
+// Monta matriz do sistema: [1, x, x^2, x^3]
+X = [ones(x)', x', (x.^2)', (x.^3)']; //grau 3
+
+// Calcula os coeficientes a0, a1, a2, a3
+a = X \ y'; // resolve X * a = y
+
+// Mostra os coeficientes do polinômio
+disp("Coeficientes [a0 a1 a2 a3]:")
+disp(a')
+
+// Calcula f(1) com o modelo ajustado
+x0 = 12;
+f12 = a(1) + a(2)*x0 + a(3)*x0^2 + a(4)*x0^3;
+
+x0 = 22;
+f22 = a(1) + a(2)*x0 + a(3)*x0^2 + a(4)*x0^3;
+
+x0 = 31;
+f31 = a(1) + a(2)*x0 + a(3)*x0^2 + a(4)*x0^3;
+
+disp("Valor estimado de f(1):")
+disp(f12)
+disp(f22)
+disp(f31)
+
+
+//////////////////////////////////////////////////
+7.
+x = [700 710 720 730 740 780];   
+y = [97.71 98.11 98.49 98.88 99.26 100.73];  
+
+// Monta matriz do sistema: [1, x]
+X = [ones(x)', x']; //grau 1
+
+// Calcula os coeficientes a0, a1
+a = X \ y'; // resolve X * a = y
+
+// Mostra os coeficientes do polinômio
+disp("Coeficientes [a0 a1]:")
+disp(a')
+
+////////////////////////////////////////////
+8.
+x = [250 330 412 485 617];   
+y = [5720 5260 4450 2780 1506];  
+
+// Monta matriz do sistema: [1, x]
+X = [ones(x)', x']; //grau 1
+
+// Calcula os coeficientes a0, a1
+a = X \ y'; // resolve X * a = y
+
+// Mostra os coeficientes do polinômio
+disp("Coeficientes [a0 a1]:")
+disp(a')
+
+
+x = [250 330 412 485 617];   
+y = [5720 5260 4450 2780 1506];  
+
+// Monta matriz do sistema: [1, x]
+X = [ones(x)', x', x'.^2, x'.^3]; //grau 3
+
+// Calcula os coeficientes a0, a1
+a = X \ y'; // resolve X * a = y
+
+// Mostra os coeficientes do polinômio
+disp("Coeficientes [a0 a1 a2 a3]:")
+disp(a')
+//////////////////////////////////////////
+9.
+x = [10 20 30 40 60 70];   
+y = [0.313 0.250 0.215 0.192 0.164 0.154];  
+
+// Monta matriz do sistema: [1, x]
+X = [ones(x)', x']; //grau 1
+
+// Calcula os coeficientes a0, a1
+a = X \ y'; // resolve X * a = y
+
+// Mostra os coeficientes do polinômio
+disp("Coeficientes [a0 a1]:")
+disp(a')
+
+////////////////////////////////////////////
+10.
+function d2f = derivada_segunda(f, x, h)
+	d2f = (f(x + h) - 2*f(x) + f(x - h)) / (h^2);
+endfunction
+
+// Função exemplo
+function y = f(x)
+	y = cos(2*x);
+endfunction
+
+x0 = 0.7;
+h = 0.000001;
+d2f_valor = derivada_segunda(f, x0, h);
+disp(d2f_valor); 
+
+////////////////////////////////////////////////
+11.
+x = [0.2 0.4 0.6 0.8 1.0];
+f = [2.415 2.637 2.907 3.193 3.381]; //usar f(2) ~ f(0.4)
+h = 0.2; // passo uniforme
+
+f1 = (f(3) - f(1)) / (2*h); // f(x=0.6) - f(x=0.2)
+
+f2 = (f(3) - 2*f(2) + f(1)) / (h^2);
+
+f3 = (-f(2) + 3*f(3) - 3*f(4) + f(5)) / (h^3);
+disp(f1)
+disp(f2)
+disp(f3)
+
+
+///////////////////////////////////////////////
+12.
+function y = f(x)
+	y = sqrt(3*x + 5);
+endfunction
+
+a = 1;
+b = 8;
+I = integrate('f', 'x', a, b);
+disp(I); 
+
+///////////////////////////////////////////////
+13.
+// ============================
+// Função genérica a integrar
+function y = f(x)
+    y = exp(-x.^3);  
+endfunction
+
+// ============================
+// Segunda derivada numérica de f(x)
+function d2f = f2_numeric(x, h)
+      d2f = (f(x + h) - 2*f(x) + f(x - h)) / (h^2);
+endfunction
+
+// ============================
+// Parâmetros do problema
+a = 0;
+b = 1;
+erro_desejado = 1e-5;
+h_derivada = 1e-4; // h pequeno para estimar f''(x) numericamente
+
+// ============================
+// Estimar máximo de |f''(x)| no intervalo
+x_vals = linspace(a + h_derivada, b - h_derivada, 1000);
+d2_vals = zeros(x_vals);
+for i = 1:length(x_vals)
+    d2_vals(i) = abs(f2_numeric(x_vals(i), h_derivada));
+end
+M = max(d2_vals); // Máximo estimado de |f''(x)|
+
+// ============================
+// Cálculo do h e n mínimos
+h_max = sqrt(12 * erro_desejado / (M * (b - a)));
+n_min = ceil((b - a) / h_max);
+h = (b-a)/n_min
+
+// ============================
+// Saída dos resultados
+disp("Máximo estimado de |f''(x)|: "), disp(M)
+disp("h máximo permitido: "), disp(h_max)
+disp("Número mínimo de subintervalos (n): "), disp(n_min)
+disp("Valor estimado de h:"),disp(h)
+
+////////////////////////////////////////////////////////////////
+14.
+// Função f(x) = 1/(2x)
+function y = f(x)
+    y = 1 ./ (2 * x);
+endfunction
+
+// Derivadas analíticas
+// Segunda derivada: f''(x) = 1 / x^3
+function d2 = f2(x)
+    d2 = 1 ./ (x.^3);
+endfunction
+
+// Quarta derivada: f''''(x) = 3 / x^5
+function d4 = f4(x)
+    d4 = 3 ./ (x.^5);
+endfunction
+
+// Intervalo da integral
+a = 1;
+b = 3;
+erro = 1e-6;
+
+// Estimar máximos das derivadas no intervalo
+x_vals = linspace(a, b, 1000);
+M2 = max(abs(f2(x_vals))); // para Trapézios
+M4 = max(abs(f4(x_vals))); // para Simpson
+
+// ----------------------
+// Método dos Trapézios:
+// E_T <= (b - a)*h^2 * M2 / 12
+// Solve for h:
+h_T = sqrt(12 * erro / ((b - a) * M2));
+n_T = ceil((b - a) / h_T);
+
+// ----------------------
+// Método de Simpson:
+// E_S <= (b - a)*h^4 * M4 / 180
+h_S = (180 * erro / ((b - a) * M4))^(1/4);
+n_S = ceil((b - a) / h_S);
+// Simpson exige n par
+if modulo(n_S, 2) <> 0 then
+    n_S = n_S + 1;
+end
+
+// Resultados:
+disp("=== Resultados ===");
+disp("Máximo de |f''(x)|: "), disp(M2);
+disp("Máximo de |f''''(x)|: "), disp(M4);
+
+disp(">> Trapézios:");
+disp("h_T máximo: "), disp(h_T);
+disp("n_T mínimo: "), disp(n_T);
+
+disp(">> Simpson:");
+disp("h_S máximo: "), disp(h_S);
+disp("n_S mínimo (par): "), disp(n_S);
+
+///////////////////////////////////////////
+15.
+function y = f(x)
+	y = 1/(1+x^4);
+endfunction
+
+a = 0;
+b = 1;
+I = integrate('f', 'x', a, b);
+disp(I); 
+
+/////////////////////////////////////////////
+16.
+function S = gaussiana(a, b, num_nodos, n)  //início, fim do intervalo, número de nodos, número de intervalos.
+    h = (b-a)/n
+    x = linspace(a,b,n+1)
+    
+    select num_nodos
+    case 1 then
+        w = [2]; t = [0]
+    case 2 then
+        w = [1 1]; t = [-sqrt(3)/3 sqrt(3)/3]
+    case 3 then
+        w = [5/9 8/9 5/9]; t = [-sqrt(3/5) 0 sqrt(3/5)]
+    case 4 then
+        w = [0 0 0 0]; t = [0 0 0 0]
+        w(1) = (18 - sqrt(30))/36;   t(1) = -sqrt((3 + 2*sqrt(6/5))/7)
+        w(2) = (18 + sqrt(30))/36;   t(2) = -sqrt((3 - 2*sqrt(6/5))/7)
+        w(3) = (18 + sqrt(30))/36;   t(3) = sqrt((3 - 2*sqrt(6/5))/7)
+        w(4) = (18 - sqrt(30))/36;   t(4) = sqrt((3 + 2*sqrt(6/5))/7)   
+    end
+    w1 = 5/9; t1 = -sqrt(3/5)
+    w2 = 8/9; t2 = 0
+    w3 = w1;  t3 = -t1
+    
+    S = 0
+    S2 = 0
+    for i = 1:n
+        alpha = (x(i+1)-x(i))/2
+        bet = (x(i+1)+x(i))/2
+        
+        x1 = alpha*t1+bet
+        x2 = alpha*t2+bet
+        x3 = alpha*t3+bet
+        
+        xcu = alpha.*t+bet
+        xpau = matrixfun(f,xcu) // aplica a função F em cada X
+        
+        A2 = sum(w.*xpau) * h/2 // equivale a (w1*f(x1) + w2*f(x2) + w3*f(x3) + w4*f(x4)) * h/2
+        S2 = S2+A2
+        
+        S = S2
+    end
+endfunction
+
+function y = f(x)
+    y = x^5
+endfunction
+
+function B = matrixfun(func,A)
+    for i = 1 : size(A,'r')
+        for j = 1 : size(A,'c')
+            B(i,j) = func(A(i,j))
+        end
+    end
+endfunction
+
+gaussiana(-1, 1, 3, 2) //grau 5 -> 3 nodos
+
+
+/////////////////////////////////////////////////
+17.
+function S = gaussiana(a, b, num_nodos, n) //início, fim do intervalo, número de nodos, número de intervalos.
+    h = (b-a)/n
+    x = linspace(a,b,n+1)
+    
+    select num_nodos
+    case 1 then
+        w = [2]; t = [0]
+    case 2 then
+        w = [1 1]; t = [-sqrt(3)/3 sqrt(3)/3]
+    case 3 then
+        w = [5/9 8/9 5/9]; t = [-sqrt(3/5) 0 sqrt(3/5)]
+    case 4 then
+        w = [0 0 0 0]; t = [0 0 0 0]
+        w(1) = (18 - sqrt(30))/36;   t(1) = -sqrt((3 + 2*sqrt(6/5))/7)
+        w(2) = (18 + sqrt(30))/36;   t(2) = -sqrt((3 - 2*sqrt(6/5))/7)
+        w(3) = (18 + sqrt(30))/36;   t(3) = sqrt((3 - 2*sqrt(6/5))/7)
+        w(4) = (18 - sqrt(30))/36;   t(4) = sqrt((3 + 2*sqrt(6/5))/7)   
+    end
+    w1 = 5/9; t1 = -sqrt(3/5)
+    w2 = 8/9; t2 = 0
+    w3 = w1;  t3 = -t1
+    
+    S = 0
+    S2 = 0
+    for i = 1:n
+        alpha = (x(i+1)-x(i))/2
+        bet = (x(i+1)+x(i))/2
+        
+        x1 = alpha*t1+bet
+        x2 = alpha*t2+bet
+        x3 = alpha*t3+bet
+        
+        xcu = alpha.*t+bet
+        xpau = matrixfun(f,xcu) // aplica a função F em cada X
+        
+        A2 = sum(w.*xpau) * h/2 // equivale a (w1*f(x1) + w2*f(x2) + w3*f(x3) + w4*f(x4)) * h/2
+        S2 = S2+A2
+        
+        S = S2
+    end
+endfunction
+
+function y = f(x)
+    y = exp(-4*x)
+endfunction
+
+function B = matrixfun(func,A)
+    for i = 1 : size(A,'r')
+        for j = 1 : size(A,'c')
+            B(i,j) = func(A(i,j))
+        end
+    end
+endfunction
+
+gaussiana(2, 8, 3, 2) 
+
+/////////////////////////////////////////////////////////////
+18.
+// Função a integrar
+function y = f(x)
+    y = 1 ./ (1 + x.^2);
+endfunction
+
+// Limites e número de subintervalos
+a = 0;
+b = 1;
+n = 4;          // deve ser par para Simpson
+h = (b - a) / n;
+
+// Pontos da malha
+x = a:h:b;
+
+// Valores da função
+fx = f(x);
+
+// Aplicar Simpson 1/3 composta
+S = fx(1) + fx($);                          // f(x0) + f(xn)
+S = S + 4 * sum(fx(2:2:$-1));               // 4 * soma dos ímpares
+S = S + 2 * sum(fx(3:2:$-2));               // 2 * soma dos pares
+I = (h / 3) * S;
+
+// Calcular pi
+pi_aproximado = 4 * I;
+
+disp("Integral aproximada (π/4): " + string(I));
+disp("Valor aproximado de π: " + string(pi_aproximado));
+
+///////////////////////////////////////////////////////////////////////
+19.
+// Função integrando
+function y = f(x)
+    y = zeros(x);
+    for i = 1:length(x)
+        if x(i) == 0 then
+            y(i) = 0;  // limite em 0
+        else
+            y(i) = (x(i)^3) / (exp(x(i)) - 1);
+        end
+    end
+endfunction
+
+// Dados
+a = 0;
+b = 2;
+n = 3;
+h = (b - a)/n;
+
+y_pts = a:h:b;  // y0, y1, y2, y3
+f_vals = f(y_pts);
+
+// Regra de Simpson 3/8
+I = (3*h/8) * (f_vals(1) + 3*f_vals(2) + 3*f_vals(3) + f_vals(4));
+
+// Calcular D(2)
+D = (3 / b^3) * I;
+
+disp("Aproximação de D(2) = "), disp(D);
+
+////////////////////////////////////////////////////////
+20.
+// Constantes
+m = 5;
+k = 60;
+c = 0.6*m + 0.4*k; // c = 27
+
+// Coeficientes da EDO normalizada
+a = c/m;  // 27 / 5 = 5.4
+b = k/m - 1/m; // (60 - 1) / 5 = 59 / 5 = 11.8
+
+// Sistema
+function f = f(t, y, z)
+    f = z;
+endfunction
+
+function g = g(t, y, z)
+    g = -a*z - b*y;
+endfunction
+
+// Parâmetros
+h = 0.1;
+t0 = 0;
+tf = 10;
+ni = (tf - t0) / h;
+
+t = t0;
+y = 0; // x(0)
+z = 1; // ẋ(0)
+
+// Vetores para armazenar os resultados
+t_values = t0:h:tf;
+x_values = zeros(1, ni+1);
+x_values(1) = y;
+
+// Loop Runge-Kutta
+for i = 1:ni
+    k1 = h * f(t, y, z);
+    L1 = h * g(t, y, z);
+
+    k2 = h * f(t + 0.5*h, y + 0.5*k1, z + 0.5*L1);
+    L2 = h * g(t + 0.5*h, y + 0.5*k1, z + 0.5*L1);
+
+    k3 = h * f(t + 0.5*h, y + 0.5*k2, z + 0.5*L2);
+    L3 = h * g(t + 0.5*h, y + 0.5*k2, z + 0.5*L2);
+
+    k4 = h * f(t + h, y + k3, z + L3);
+    L4 = h * g(t + h, y + k3, z + L3);
+
+    y = y + (1/6)*(k1 + 2*(k2 + k3) + k4);
+    z = z + (1/6)*(L1 + 2*(L2 + L3) + L4);
+    t = t + h;
+
+    x_values(i+1) = y
+end
+
+// Gráfico
+plot(t_values, x_values);
+xlabel("Tempo (s)");
+ylabel("Deslocamento x(t)");
+title("Resposta de x(t) para m=5, c=27, k=60 e f(x)=x");
+
+
+//valores específicos
+function x_t = get_x(t_values, x_values, t_query)
+    index = round((t_query - t_values(1)) / (t_values(2) - t_values(1))) + 1;
+    x_t = x_values(index);
+endfunction
+
+x2 = get_x(t_values, x_values, 2)
+
+
+////////////////////////////////////////////////////////////////////////
+21.
+// Constantes
+m = 10;
+k = 1/3;
+F = 10;
+a = k / m;    // 1/30 ≈ 0.0333
+b = F / m;    // 1
+
+// Sistema de EDOs
+function f = f(t, y, z)
+    f = z; // dy/dt = z
+endfunction
+
+function g = g(t, y, z)
+    g = -a * y + b; // dz/dt = -a*y + b
+endfunction
+
+// Parâmetros de integração
+h = 0.1;
+t0 = 0;
+tf = 1;
+ni = (tf - t0) / h;
+
+t = t0;
+y = 0;    // x(0)
+z = 0.2;  // ẋ(0)
+
+t_values = t0:h:tf;
+x_values = zeros(1, ni+1);
+x_values(1) = y;
+
+// Runge-Kutta 4ª ordem
+for i = 1:ni
+    k1 = h * f(t, y, z);
+    L1 = h * g(t, y, z);
+
+    k2 = h * f(t + 0.5*h, y + 0.5*k1, z + 0.5*L1);
+    L2 = h * g(t + 0.5*h, y + 0.5*k1, z + 0.5*L1);
+
+    k3 = h * f(t + 0.5*h, y + 0.5*k2, z + 0.5*L2);
+    L3 = h * g(t + 0.5*h, y + 0.5*k2, z + 0.5*L2);
+
+    k4 = h * f(t + h, y + k3, z + L3);
+    L4 = h * g(t + h, y + k3, z + L3);
+
+    y = y + (1/6)*(k1 + 2*(k2 + k3) + k4);
+    z = z + (1/6)*(L1 + 2*(L2 + L3) + L4);
+    t = t + h;
+
+    x_values(i+1) = y;
+end
+
+// Plot
+plot(t_values, x_values);
+xlabel("Tempo (s)");
+ylabel("Deslocamento x(t)");
+title("Resposta de um sistema massa-mola com força constante (F = 10N)");
+
+////////////////////////////////////////////////////////////////////////
+22.
+// Funções do sistema
+function dx = fx(t, x, y)
+    dx = 7*x - 4*y;
+endfunction
+
+function dy = fy(t, x, y)
+    dy = -9*x + 7*y;
+endfunction
+
+// Parâmetros
+t0 = 0;
+tf = 1;
+h = 0.01;
+N = (tf - t0) / h;
+
+t = t0;
+x = 4; // x(0)
+y = 1; // y(0)
+
+t_values = t0:h:tf;
+x_values = zeros(1, N+1);
+y_values = zeros(1, N+1);
+x_values(1) = x;
+y_values(1) = y;
+
+// Loop RK4
+for i = 1:N
+    k1x = h * fx(t, x, y);
+    k1y = h * fy(t, x, y);
+
+    k2x = h * fx(t + 0.5*h, x + 0.5*k1x, y + 0.5*k1y);
+    k2y = h * fy(t + 0.5*h, x + 0.5*k1x, y + 0.5*k1y);
+
+    k3x = h * fx(t + 0.5*h, x + 0.5*k2x, y + 0.5*k2y);
+    k3y = h * fy(t + 0.5*h, x + 0.5*k2x, y + 0.5*k2y);
+
+    k4x = h * fx(t + h, x + k3x, y + k3y);
+    k4y = h * fy(t + h, x + k3x, y + k3y);
+
+    x = x + (1/6)*(k1x + 2*k2x + 2*k3x + k4x);
+    y = y + (1/6)*(k1y + 2*k2y + 2*k3y + k4y);
+    t = t + h;
+
+    x_values(i+1) = x;
+    y_values(i+1) = y;
+end
+
+// Plotando x(t) e y(t)
+plot(t_values, x_values, 'b', t_values, y_values, 'r');
+xlabel("Tempo (t)");
+ylabel("x(t) e y(t)");
+legend("x(t)", "y(t)");
+title("Solução do sistema dx/dt = 7x - 4y, dy/dt = -9x + 7y");
+
+
+//para tf
+disp("x(1) = " + string(x_values($)));
+disp("y(1) = " + string(y_values($)));
+
+/////////////////////////////////////////////////////////
+23.
+// Constantes
+rho = 1.23;
+
+// Equação: dU/dx = - (1 + x)/(rho * U)
+function dU = f(x, U)
+    dU = -(1 + x) / (rho * U);
+endfunction
+
+// Parâmetros
+x0 = 0;
+xf = 1;
+h = 0.01;
+N = (xf - x0) / h;
+
+x = x0;
+U = 1; // condição inicial assumida: U(0) = 1
+
+x_values = x0:h:xf;
+U_values = zeros(1, N+1);
+U_values(1) = U;
+
+// Runge-Kutta 4ª ordem
+for i = 1:N
+    k1 = h * f(x, U);
+    k2 = h * f(x + 0.5*h, U + 0.5*k1);
+    k3 = h * f(x + 0.5*h, U + 0.5*k2);
+    k4 = h * f(x + h, U + k3);
+
+    U = U + (1/6)*(k1 + 2*k2 + 2*k3 + k4);
+    x = x + h;
+
+    U_values(i+1) = U;
+end
+
+// Gráfico da solução U(x)
+plot(x_values, U_values);
+xlabel("x");
+ylabel("Velocidade U(x)");
+title("Distribuição de velocidade na camada limite sobre superfície curva");
+
+//valores específicos
+U07 = U_values(71);
+disp("U(0.7) = " + string(U07));
+
+//////////////////////////////////////////////////////////////////
+24.
+// Derivadas
+function dy = f(x, y, z)
+    dy = z;
+endfunction
+
+function dz = g(x, y, z)
+    dz = 0.5*x - 0.25*x^2;
+endfunction
+
+// Parâmetros do problema
+x0 = 0;
+xf = 2;
+h = 0.01;
+N = (xf - x0) / h;
+
+function y_end = runge_kutta_shoot(z0)
+    x = x0;
+    y = 0;
+    z = z0;
+
+    for i = 1:N
+        k1 = h * f(x, y, z);
+        L1 = h * g(x, y, z);
+
+        k2 = h * f(x + 0.5*h, y + 0.5*k1, z + 0.5*L1);
+        L2 = h * g(x + 0.5*h, y + 0.5*k1, z + 0.5*L1);
+
+        k3 = h * f(x + 0.5*h, y + 0.5*k2, z + 0.5*L2);
+        L3 = h * g(x + 0.5*h, y + 0.5*k2, z + 0.5*L2);
+
+        k4 = h * f(x + h, y + k3, z + L3);
+        L4 = h * g(x + h, y + k3, z + L3);
+
+        y = y + (1/6)*(k1 + 2*k2 + 2*k3 + k4);
+        z = z + (1/6)*(L1 + 2*L2 + 2*L3 + L4);
+        x = x + h;
+    end
+    y_end = y; // retorna y(xf)
+endfunction
+
+// Método do tiro com tentativa e erro (simples)
+z0_try1 = 0;
+z0_try2 = -10;
+
+y1 = runge_kutta_shoot(z0_try1);
+y2 = runge_kutta_shoot(z0_try2);
+
+// Interpolação linear para estimar z0 ideal
+z0 = z0_try1 + (0 - y1) * (z0_try2 - z0_try1) / (y2 - y1);
+
+// Reexecuta com z0 ajustado
+x = x0;
+y = 0;
+z = z0;
+
+x_values = x0:h:xf;
+y_values = zeros(1, N+1);
+y_values(1) = y;
+
+for i = 1:N
+    k1 = h * f(x, y, z);
+    L1 = h * g(x, y, z);
+
+    k2 = h * f(x + 0.5*h, y + 0.5*k1, z + 0.5*L1);
+    L2 = h * g(x + 0.5*h, y + 0.5*k1, z + 0.5*L1);
+
+    k3 = h * f(x + 0.5*h, y + 0.5*k2, z + 0.5*L2);
+    L3 = h * g(x + 0.5*h, y + 0.5*k2, z + 0.5*L2);
+
+    k4 = h * f(x + h, y + k3, z + L3);
+    L4 = h * g(x + h, y + k3, z + L3);
+
+    y = y + (1/6)*(k1 + 2*k2 + 2*k3 + k4);
+    z = z + (1/6)*(L1 + 2*L2 + 2*L3 + L4);
+    x = x + h;
+
+    y_values(i+1) = y;
+end
+
+// Plot da deflexão
+plot(x_values, y_values);
+xlabel("x (m)");
+ylabel("Deflexão y(x)");
+title("Deflexão da viga com carga distribuída linearmente");
+
+// Interpolação para x = 1.23. podem ser outros valores
+xq = 1.23;
+y_interp = interp1(x_values, y_values, xq);
+disp("y(1.23) = " + string(y_interp));
+
+/////////////////////////////////////////////////////////////////
+25.
+function dv = f(t, v)
+    g = 9.81;
+    dv = g * (1 - v^2 / 40);
+endfunction
+
+// Parâmetros
+t0 = 0;
+tf = 20;
+h = 0.1;
+N = (tf - t0) / h;
+
+t = t0;
+v = 70;
+
+t_values = t0:h:tf;
+v_values = zeros(1, N+1);
+v_values(1) = v;
+
+// Loop RK4
+for i = 1:N
+    k1 = h * f(t, v);
+    k2 = h * f(t + 0.5*h, v + 0.5*k1);
+    k3 = h * f(t + 0.5*h, v + 0.5*k2);
+    k4 = h * f(t + h, v + k3);
+
+    v = v + (1/6)*(k1 + 2*k2 + 2*k3 + k4);
+    t = t + h;
+
+    v_values(i+1) = v;
+end
+
+// Resultado final:
+disp("Velocidade após 20s: v(20) = " + string(v_values($)) + " m/s");
+
+// Gráfico
+plot(t_values, v_values);
+xlabel("Tempo (s)");
+ylabel("Velocidade (m/s)");
+title("Velocidade do paraquedista após abrir o paraquedas");
+
+
+////////////////////////////////////////////////////////////////////////
+26.
+// Sistema de EDOs
+function f = f(t, y, z)
+    f = z; // dy/dt = z
+endfunction
+
+function g = g(t, y, z)
+    g = 9 * sin(t) - 20 * z - 125 * y; // dz/dt = 9sin(t) - 20z - 125y
+endfunction
+
+// Parâmetros
+t0 = 0;
+tf = 2;
+h = 0.01;
+N = (tf - t0) / h;
+
+t = t0;
+y = 0; // q(0)
+z = 0; // q̇(0)
+
+t_values = t0:h:tf;
+q_values = zeros(1, N+1);
+q_values(1) = y;
+
+// Loop RK4
+for i = 1:N
+    k1 = h * f(t, y, z);
+    L1 = h * g(t, y, z);
+
+    k2 = h * f(t + 0.5*h, y + 0.5*k1, z + 0.5*L1);
+    L2 = h * g(t + 0.5*h, y + 0.5*k1, z + 0.5*L1);
+
+    k3 = h * f(t + 0.5*h, y + 0.5*k2, z + 0.5*L2);
+    L3 = h * g(t + 0.5*h, y + 0.5*k2, z + 0.5*L2);
+
+    k4 = h * f(t + h, y + k3, z + L3);
+    L4 = h * g(t + h, y + k3, z + L3);
+
+    y = y + (1/6)*(k1 + 2*(k2 + k3) + k4);
+    z = z + (1/6)*(L1 + 2*(L2 + L3) + L4);
+    t = t + h;
+
+    q_values(i+1) = y;
+end
+
+// Plotar q(t)
+plot(t_values, q_values);
+xlabel("Tempo (s)");
+ylabel("Carga q(t)");
+title("Solução de q'' + 20q' + 125q = 9sen(t) usando Runge-Kutta 4ª ordem");

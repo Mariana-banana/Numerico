@@ -56,15 +56,14 @@ def interpolar_newton(x_data, y_data, grau, ponto_x):
 
 # --- DADOS DO PROBLEMA DA MOLA ---
 # Eixo X: Alongamento (mm)
-x_mola = [10, 15, 20, 25, 30, 35]
+x_mola = [1, 2, 3, 4]
 # Eixo Y: Carga (kgf)
-p_mola = [105, 172, 253, 352, 473, 619]
+p_mola =[0.554, 0.5639, 0.5735, 0.5831]
 
 # Pontos que queremos encontrar
-pontos_a_encontrar = [12, 22, 31]
+pontos_a_encontrar = [1.32]
 # Grau do polinômio especificado no problema
 grau_do_polinomio = 3
-
 print("--- Resolução do Problema da Mola ---")
 for ponto in pontos_a_encontrar:
     carga_calculada = interpolar_newton(x_mola, p_mola, grau_do_polinomio, ponto)

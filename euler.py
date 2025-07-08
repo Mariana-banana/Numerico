@@ -38,12 +38,12 @@ if __name__ == '__main__':
         #return y**2
 
     # Condições Iniciais: x(0) = 3000, y(0) = 120
-    y_inicial = [3000, 120]
-    t_inicial = 0
+    y_inicial = [0.1]
+    t_inicial = 1
     
     # Parâmetros da Simulação
     passo_h = 0.1
-    tempo_final = 10.0 # Objetivo: encontrar o estado em t=10
+    tempo_final = 2.0 # Objetivo: encontrar o estado em t=10
     
     # --- RESOLVENDO E EXIBINDO OS RESULTADOS ---
     tempos, populacoes = metodo_euler_sistema(f_problema, y_inicial, t_inicial, passo_h, tempo_final)

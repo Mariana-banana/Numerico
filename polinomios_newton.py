@@ -28,8 +28,11 @@ def newton_interp(x_data, y_data, x):
 d_cm = [250, 330, 412, 485, 617]
 E = [5720, 5260, 4450, 2780, 1506]
 
+d_cm = [26, 28, 30, 32, 34, 36, 38, 40, 42]
+E = [0.4383, 0.4694, 0.5000, 0.5299, 0.5591, 0.5877, 0.6156, 0.6427, 0.6691]
+
 # Ponto a interpolar
-d_alvo = 37.5
+d_alvo = 32.2567
 
 # Calcular valor interpolado
 E_interpolado = newton_interp(d_cm, E, d_alvo)

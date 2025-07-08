@@ -37,11 +37,14 @@ def pontos_mais_proximos(x_dados, y_dados, x_alvo, grau):
 alongamentos = [10, 15, 20, 25, 30, 35]
 cargas = [105, 172, 253, 352, 473, 619]
 
+alongamentos = [26, 28, 30, 32, 34, 36, 38, 40, 42]
+cargas = [0.4383, 0.4694, 0.5000, 0.5299, 0.5591, 0.5877, 0.6156, 0.6427, 0.6691]
+
 # Grau do polinômio de Newton
-grau = 3
+grau = 6
 
 # Pontos alvo a interpolar
-x_alvos = [12, 22, 31]
+x_alvos = [32.2567]
 
 # Cálculo e impressão
 for x_alvo in x_alvos:

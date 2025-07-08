@@ -1,0 +1,317 @@
+import torch
+from PIL import Image
+import numpy as np
+import os
+
+print("Executando em:", os.getcwd())
+
+# params
+sample_radius = 3
+from skimage.draw import disk
+shape = (1 + 2 * sample_radius, 1 + 2 * sample_radius)
+sample_disk = disk(center=(shape[0] // 2, shape[1] // 2), radius=sample_radius)
+
+# número de pixels no disco
+nin = sample_disk[0].size
+
+# model
+nn = 50
+nc = 4
+act_fun = torch.nn.Sigmoid()
+model = torch.nn.Sequential()
+model.add_module('layer_0', torch.nn.Linear(nin, nn))
+model.add_module('fun_0', act_fun)
+for l in range(1, nc - 1):
+    model.add_module(f'layer_{l}', torch.nn.Linear(nn, nn))
+    model.add_module(f'fun_{l}', act_fun)
+model.add_module(f'layer_{nc - 1}', torch.nn.Linear(nn, 1))
+model.add_module(f'fun_{nc - 1}', act_fun)
+
+# optim
+optim = torch.optim.Adam(model.parameters(), lr=0.01)
+loss_fun = torch.nn.MSELoss()
+
+# training
+num_epochs = 10000
+freq_out = 10
+tol = 1.4e-3
+
+# load training sample
+sample_image = Image.open('C:/Users/Windows11-Pro/OneDrive/Documentos/PICME/original.jpg').convert('L')
+sample = np.array(sample_image) / 255.0
+
+mask_image = Image.open('C:/Users/Windows11-Pro/OneDrive/Documentos/PICME/C2b.png').convert('L')
+mask = np.array(mask_image) / 255.0
+height, width = sample.shape
+
+# num pxs pre epoch
+pxs_per_epoch_in = 40
+pxs_per_epoch_out = 40
+
+# pxs in colonies
+mask_threshold = 0.1
+pxs_in = np.argwhere(mask < mask_threshold)
+num_pxs_in = pxs_in.shape[0]
+
+# pxs out colonies
+pxs_out = np.argwhere(mask == 1)
+pxs_out = pxs_out[(pxs_out[:, 0] > sample_radius) &
+                  (pxs_out[:, 1] > sample_radius) &
+                  (pxs_out[:, 0] < height - sample_radius) &
+                  (pxs_out[:, 1] < width - sample_radius)]
+num_pxs_out = pxs_out.shape[0]
+
+X = torch.zeros((pxs_per_epoch_in + pxs_per_epoch_out, nin))
+Y = torch.zeros((pxs_per_epoch_in + pxs_per_epoch_out, 1))
+
+for epoch in range(num_epochs):
+    epoch_pxs_in = np.random.choice(np.arange(num_pxs_in), pxs_per_epoch_in, replace=False)
+    epoch_pxs_out = np.random.choice(np.arange(num_pxs_out), pxs_per_epoch_out, replace=False)
+
+    for i in range(pxs_per_epoch_in):
+        center_px = pxs_in[epoch_pxs_in[i]]
+        rr = center_px[0] + sample_disk[0]
+        cc = center_px[1] + sample_disk[1]
+
+        rr = np.clip(rr, 0, height - 1)
+        cc = np.clip(cc, 0, width - 1)
+
+        X[i] = torch.from_numpy(sample[rr, cc])
+        Y[i, 0] = mask[center_px[0], center_px[1]]
+
+    for j in range(pxs_per_epoch_out):
+        i = j + pxs_per_epoch_in
+        center_px = pxs_out[epoch_pxs_out[j]]
+        rr = center_px[0] + sample_disk[0]
+        cc = center_px[1] + sample_disk[1]
+
+        rr = np.clip(rr, 0, height - 1)
+        cc = np.clip(cc, 0, width - 1)
+
+        X[i] = torch.from_numpy(sample[rr, cc])
+        Y[i, 0] = 0.
+
+    # forward
+    Y_pred = model(X)
+
+    # loss
+    loss = loss_fun(Y_pred, Y)
+
+    if (epoch % freq_out == 0):
+        print(f'Epoch {epoch}, loss: {loss:.4e}')
+
+    if (loss < tol):
+        print(f'Epoch {epoch}, loss: {loss:.4e} (converged)')
+        torch.save(model, 'model.pt')
+        break
+
+    # backward
+    optim.zero_grad()
+    loss.backward()
+    optim.step()
+
+
+# verify
+output_image = np.zeros_like(sample)
+X = torch.empty((height - 2 * sample_radius) * (width - 2 * sample_radius), nin)
+
+s = 0
+for i in range(sample_radius, height - sample_radius):
+    for j in range(sample_radius, width - sample_radius):
+        rr = sample_disk[0] + i
+        cc = sample_disk[1] + j
+
+        rr = np.clip(rr, 0, height - 1)
+        cc = np.clip(cc, 0, width - 1)
+
+        X[s] = torch.from_numpy(sample[rr, cc])
+        s += 1
+
+        print(f'{s}\n')
+
+Y_pred = model(X).detach().numpy().flatten()
+
+s = 0
+for i in range(sample_radius, height - sample_radius):
+    for j in range(sample_radius, width - sample_radius):
+        output_image[i, j] = Y_pred[s]
+        s += 1
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(1, 2, figsize=(12, 6))
+ax[0].set_title('sample')
+ax[0].imshow(sample, cmap='gray')
+ax[1].set_title('model')
+output_image[output_image < 0.5] = 0
+ax[1].imshow(output_image, cmap='gray')
+plt.show()
+
+///////////////////////////////////////////////////////////
+Euler para EDOs
+y - t^2 + 1
+y(0) = 0.5
+t de 0 a 2
+h = 0.2
+
+// Função f(t, y) = y - t^2 + 1
+function dy = f(t, y)
+    dy = y - t^2 + 1;
+endfunction
+
+// Parâmetros
+t0 = 0;
+y0 = 0.5;
+h = 0.2;
+n = (2 - t0)/h; // número de passos
+
+// Vetores de tempo e solução
+t = zeros(1, n + 1);
+y = zeros(1, n + 1);
+
+t(1) = t0;
+y(1) = y0;
+
+// Método de Euler
+for i = 1:n
+    y(i+1) = y(i) + h * f(t(i), y(i));
+    t(i+1) = t(i) + h;
+end
+
+// Mostrar resultados
+disp([t', y'], "t e y usando método de Euler");
+
+// Gráfico
+plot(t, y, 'b-o')
+xlabel("t")
+ylabel("y")
+title("Método de Euler para EDO")
+
+//////////////////////////////////////////////////
+//euler = exp(1)
+
+// modulo = abs(x)
+
+//f'(2) x^2 + 3*x +2
+
+function df = derivada(f, x, h)
+df = (f(x + h) - f(x)) / h;
+endfunction
+
+// Exemplo de uso:
+function y = f(x)
+y = x^2 + 3*x + 2;
+endfunction
+
+x0 = 2;
+h = 1e-5;
+df_valor = derivada(f, x0, h);
+disp(df_valor);
+
+///////////////////////////////////////
+
+//integração definida de x.^2 + 3*x + 2;
+function y = f(x)
+y = (1 - abs(x / 2))^3;
+endfunction
+
+a = -2;
+b = 2;
+I = integrate('f', 'x', a, b);
+disp(I); // Deve mostrar o valor da integral definida de 0 a 2
+
+////////////////////////////
+
+function d2f = derivada_segunda(f, x, h)
+d2f = (f(x + h) - 2*f(x) + f(x - h)) / (h^2);
+endfunction
+
+// Função exemplo
+function y = f(x)
+y = x^3 + 2*x**2 - 5 *x + 1;
+endfunction
+
+x0 = 2;
+h = 1e-5;
+d2f_valor = derivada_segunda(f, x0, h);
+disp(d2f_valor); // Aproximação de f''(2)
+
+
+function d3f = derivada_terceira(f, x, h)
+d3f = (f(x + 2*h) - 2*f(x + h) + 2*f(x - h) - f(x - 2*h)) / (2*h^3);
+endfunction
+
+x0 = 1;
+h = 1e-4;
+n = 5;
+for i=1:n
+x0 = derivada_terceira(f, x0, h)
+end
+
+
+///////////////////////////////////////////////
+R-Kuta4
+y' = 1-t+4y
+y(0) = 1
+clear;
+t=0;
+y=1;
+h = 0.1;
+n=4;
+
+for i=1:n
+k1 = 1 - t + 4*y;
+k2 = 1 -(t+h/2) + 4*(y+(h/2)*k1);
+k3 = 1 -(t+h/2) + 4*(y+(h/2)*k2);
+k4 = 1 - (t+h) + 4*(y+h*k3);
+y = y + h*(k1 + 2*k2 + 2*k3 + k4)/6
+t = t+h;
+end
+
+/////////////////////////////////////
+
+z'' = z^2 - y + e^x = f
+y'' = z - y^2 - e^x = g
+z(0) - 0
+z'(0) = 0
+y(0) = 1
+y'(0) = -2
+
+z(3) = ?
+y(3) = ?
+
+clear;
+x = 0;
+h = 0.00001;
+za = 0;
+ya = 1;
+zaa = 0;
+yaa = ya + 2*h;
+n = 300000;
+
+for i=1:n
+z = 2*za-zaa + h^2*(za^2-ya+exp(x));
+y = 2*ya-yaa + h^2*(za-ya^2-exp(x));
+x = x + h;
+zaa = za;
+za = z;
+yaa = ya;
+ya = y;
+end
+
+z
+y
+
+/////////////////////////
+
+min quadrados
+
+x = 0:0.1:2;
+y = exp(x / 14) - 1.5;
+
+M = [x' (x.^2)']; // cada linha: [x_i, x_i^2]
+coef = M \ y'; // resolve M * [k; q] = y
+q = coef(2); // queremos o segundo coeficiente
+disp(q)
+
+acha coeficientes x x^2 que se encaixam nos pontos 0, 0.1 e 2 em y = exp(x/14) - 1.5
+

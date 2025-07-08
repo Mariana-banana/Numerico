@@ -15,8 +15,11 @@ y_data = np.array([5720, 5260, 4450, 2780, 1506])
 #x_data = np.array([1, 1.1, 1.2])
 #y_data = np.array([2.718, 3.004, 3.32])
 
+x_data = np.array([5, 15, 25, 35])
+y_data = np.array([10, 15, 20, 13])
+
 # 2. Escolha o grau do polinômio
-grau_do_polinomio = 2
+grau_do_polinomio = 3
 
 # 3. (NOVO) Coloque aqui os valores de X que você quer calcular.
 #    Deixe a lista vazia [] se não quiser calcular nenhum ponto.
@@ -39,7 +42,7 @@ print("==============================================")
 print(f"  REGRESSÃO POLINOMIAL DE GRAU {grau_do_polinomio}")
 print("==============================================")
 print("\nFórmula da Função Encontrada:")
-print(np.round(polinomio, 6)) # Arredonda para 6 casas decimais
+print(polinomio) # Arredonda para 6 casas decimais
 print("\n----------------------------------------------")
 print(f"Coeficiente de Determinação (R²): {r2:.6f}")
 if r2 > 0.98:

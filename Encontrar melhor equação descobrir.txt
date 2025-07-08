@@ -1,0 +1,2 @@
+Encontrar melhor equação: descobrir melhor método e aplicar ele
+Descobrir o valor de um ponto com base em outros pontos: polinomios/interpolacao de newton

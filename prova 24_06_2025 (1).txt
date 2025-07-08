@@ -1,0 +1,121 @@
+1) Qual a curva exponencial no formato y = C * exp(a * x) que melhor se ajusta aos pontos com coordenadas x = 1, 2, 3, 4, 5 e y = 0.6, 1.9, 4.3, 7.6, 12.6?
+	a)f(x) = 0.6987 * exp(0.5818*x)
+	b)f(x) = 0.6987 * exp(0.3817*x)
+	c)f(x) = 0.6789 * exp(0.4381*x)
+	d)f(x) = 0.6501 * exp(0.5438*x)
+	e)...
+
+2)Seja y1 + y = (x*y)^2 + en(x^2 * y) com y(0) = 1. Qual o vlor d y(1) usando h = 0.05 com o métoo d Rung-Kutta de ordm 2?
+	a)0.3829
+	b)0.3839
+	c)0.3835
+	d)0.3832
+	e)...
+
+3)Seja u' = sen(u) com u(0) = 1. Aproxime u(2) usano 100 subintervalo e o método de Euler. A resposta é?
+	a)2.649
+	b)2.663
+	c)2.645
+	d)2.659
+	e)...
+
+4)Determine a função trigonométrica que melhor se ajuta aos dados x = -1, 1, 2,  e y = -1, 1, 3, 4.
+	a)g(x) = 1.046 * sen(x) + 2.447 * cos(x) + 1.276
+	b)g(x) = 1.046 * sen(x) - 2.447 * cos(x) + 1.476
+	c)g(x) = -1.046 * sen(x) + 2.447 * cos(x) + 1.276
+	d)g(x) = 1.046 * sen(x) - 2.447 * cos(x) + 1.276
+	e)...
+
+5)Determine a parábola que melhor se ajusta ao pontos com coordenada x = 0, 1 , 2, 3 e y = 0.2, 1, 5, 20.
+	a)f(x) = -3.525*x^2 -4.205*x + 0.495
+	b)f(x) =  3.525*x^2 -4.345*x + 0.549
+	c)f(x) =  3.525*x^2 -4.205*x + 0.495
+	d)f(x) =  3.51*x^2  -4*x + 0.5
+	e)...
+
+6)Determine a cúbica que melhor se ajuta aos ado x = 0, 1, 2, 3 e y = 0.2, 1, 5, 20.
+	a)f(x) = -1.317*x^3 - 2.4*x^2 + 1.983*x + 0.1
+	b)f(x) = 1.317*x^3 + 2.4*x^2 + 1.983*x + 0.1
+	c)f(x) = 1.317*x^3 - 2.4*x^2 + 1.983*x - 0.1
+	d)f(x) = 1.317*x^3 - 2.4*x^2 + 1.983*x + 0.1
+	e)...
+
+7)Para aproximar S0_2 exp(x)/[(e-x)^0.5]dx com erro 10^-7 e o método de Simpson, quantos subintervalo são necessário?
+	a)23
+	b)19
+	c)22
+	d)15
+	e)...
+
+
+function y=f(x)
+    y = exp(x)/((%e-x)^0.5)
+endfunction
+
+function soma = simpson_func(a,b,n)
+    h = (b-a) / (2*n)
+    printf("\n h: %f", h)
+    x = linspace(a,b,n+1) // Cria um vetor com n+1 pontos entre a e b
+    soma = 0
+    
+    for i = 1:n
+        x1 = x(i)
+        x3 = x(i+1)
+        x2 = (x1+x3)/2
+        
+        soma_parc = (f(x1) + 4*f(x2) + f(x3))*h/3
+        soma = soma + soma_parc
+    end
+endfunction
+
+function res = simpson_max_dig(a, b, max_e)
+    d = 10;
+    n = 3;
+
+    while d > max_e
+        s = simpson_func(a, b, n);
+        n = n + 1;
+        s1 = simpson_func(a, b, n);
+        d = abs(s1 - s)/s;
+    end
+    printf("\n n: %d", n);
+    
+    res = s1;
+endfunction
+
+simpson_max_dig(0,2,10^-7)
+
+
+
+8)O valor de f(1.32) para os pontos com coordenadas x = 1, 2, 3, 4 e y = 0.554, 0.5639, 0.5735, 0.5831 é?
+	a)0.550242
+	b)0.557032
+	c)0.551223
+	d)0.550991
+	e)...
+
+9)O valor da integral S2_3 cos(2*x)dx utilizando o método dos trapézios com 10 subintervlos é:
+	a)0.2463
+	b)0.2379
+	c)0.2369
+	d)0.2401
+	e)...
+
+10)A integral S0_1 exp(-x^2)dx utilizano o método d Simpson com 4 subintervalos vale?
+	a)0.72462
+	b)0.73751
+	c)0.74683
+	d)0.75294
+	e)...
+
+
+1) A FEITA CONFERE
+2) B FEITA CONFERE
+3) D FEITA CONFERE
+4) D
+5) C* FEITEA CONFERE C ASTERISCO
+6) D FEITA CONFERE
+7) C
+8) B FEITA CONFERE
+9) C* FEITA CONFERE
+10) C FEITA CONFERE
