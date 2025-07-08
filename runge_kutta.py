@@ -202,11 +202,61 @@ if __name__ == '__main__':
         "labels": ["Velocidade U(x)"]
     }
     
+    problema_p2 = {
+        "nome": "P2 q8",
+        
+        # Nossa EDO de 1ª ordem. 't' no código é 'x' no problema,
+        # e 'y' no código é a velocidade 'U'.
+        "f": lambda t, y: t * y,
+        
+        # Condição inicial U(0)=1. Como é uma única equação, y0 é um número.
+        "y0": 0.1,
+        
+        # Parâmetros da simulação
+        "t0": 1.0,
+        "t_final": 2.0,    # O intervalo é [0, 1]
+        "h": 0.1,          # Usando um passo razoável
+        
+        # Rótulo para o gráfico
+        "labels": ["Velocidade U(x)"]
+    }
+    
+    problema_p2_2 = {
+        "nome": "P2 q9",
+        
+        # Nossa EDO de 1ª ordem. 't' no código é 'x' no problema,
+        # e 'y' no código é a velocidade 'U'.
+        "f": lambda t, y: t * y,
+        
+        # Condição inicial U(0)=1. Como é uma única equação, y0 é um número.
+        "y0": 0.1,
+        
+        # Parâmetros da simulação
+        "t0": 1.0,
+        "t_final": 2.0,    # O intervalo é [0, 1]
+        "h": 0.1,          # Usando um passo razoável
+        
+        # Rótulo para o gráfico
+        "labels": ["Velocidade U(x)"]
+    }
+    
+    problema_pendulo = {
+        "nome": "Pêndulo Simples Não-Linear",
+        "f": lambda t, y: np.array([
+            y[1],                          # Equação para y1' (dθ/dt = ω)
+            -(9.81 / 1.0) * np.sin(y[0])   # Equação para y2' (dω/dt)
+        ]),
+        "y0": [np.pi / 2, 0],         # Condições iniciais: [θ(0), ω(0)] = [90°, 0]
+        "t0": 0.0,
+        "t_final": 10.0,              # Simular por 10 segundos para ver algumas oscilações
+        "h": 0.05,                    # Usar um passo menor para um gráfico mais suave
+        "labels": ["Ângulo θ (rad)", "Velocidade ω (rad/s)"]
+    }
 
     # --- ESCOLHA QUAL PROBLEMA EXECUTAR AQUI ---
     # Basta atribuir o dicionário do problema desejado à variável 'problema_ativo'
     
-    problema_ativo = problema_paraquedista
+    problema_ativo = problema_pendulo
     # problema_ativo = problema_sistema_linear
     
     # Executa a função principal com o problema escolhido
